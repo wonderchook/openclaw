@@ -36,3 +36,16 @@ export function isSilentReplyPrefixText(
   }
   return token.toUpperCase().startsWith(normalized);
 }
+
+/** Check whether text (or a streaming prefix) matches any silent reply token (NO_REPLY or HEARTBEAT_OK). */
+export function isAnySilentStreamingText(text: string | undefined): boolean {
+  if (!text) {
+    return false;
+  }
+  return (
+    isSilentReplyText(text) ||
+    isSilentReplyPrefixText(text) ||
+    isSilentReplyText(text, HEARTBEAT_TOKEN) ||
+    isSilentReplyPrefixText(text, HEARTBEAT_TOKEN)
+  );
+}

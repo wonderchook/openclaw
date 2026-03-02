@@ -2,6 +2,7 @@ import { resolveHumanDelayConfig } from "../../../agents/identity.js";
 import { dispatchInboundMessage } from "../../../auto-reply/dispatch.js";
 import { clearHistoryEntriesIfEnabled } from "../../../auto-reply/reply/history.js";
 import { createReplyDispatcherWithTyping } from "../../../auto-reply/reply/reply-dispatcher.js";
+import { isAnySilentStreamingText } from "../../../auto-reply/tokens.js";
 import type { ReplyPayload } from "../../../auto-reply/types.js";
 import { removeAckReactionAfterReply } from "../../../channels/ack-reactions.js";
 import { logAckFailure, logTypingFailure } from "../../../channels/logging.js";
@@ -219,6 +220,9 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
     }
 
     const text = payload.text.trim();
+    if (isAnySilentStreamingText(text)) {
+      return;
+    }
     let plannedThreadTs: string | undefined;
     try {
       if (!streamSession) {
@@ -349,7 +353,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
   let statusUpdateCount = 0;
   const updateDraftFromPartial = (text?: string) => {
     const trimmed = text?.trimEnd();
-    if (!trimmed) {
+    if (!trimmed || isAnySilentStreamingText(trimmed)) {
       return;
     }
 
