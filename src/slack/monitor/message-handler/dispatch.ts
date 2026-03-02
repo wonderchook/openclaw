@@ -284,6 +284,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
         !payload.isError &&
         typeof finalText === "string" &&
         finalText.trim().length > 0 &&
+        !isSilentReplyText(finalText) &&
         typeof draftMessageId === "string" &&
         typeof draftChannelId === "string";
 
@@ -353,7 +354,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
   let statusUpdateCount = 0;
   const updateDraftFromPartial = (text?: string) => {
     const trimmed = text?.trimEnd();
-    if (!trimmed) {
+    if (!trimmed || isSilentReplyText(trimmed)) {
       return;
     }
 
