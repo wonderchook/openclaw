@@ -44,10 +44,15 @@ describe("isSilentReplyPrefixText", () => {
     expect(isSilentReplyPrefixText("  HEARTBEAT_", "HEARTBEAT_OK")).toBe(true);
   });
 
-  it("rejects ambiguous natural-language prefixes", () => {
-    expect(isSilentReplyPrefixText("N")).toBe(false);
-    expect(isSilentReplyPrefixText("No")).toBe(false);
+  it("matches short uppercase prefixes of the token", () => {
+    expect(isSilentReplyPrefixText("N")).toBe(true);
+    expect(isSilentReplyPrefixText("NO")).toBe(true);
+    expect(isSilentReplyPrefixText("No")).toBe(true);
+  });
+
+  it("rejects text that is not a token prefix", () => {
     expect(isSilentReplyPrefixText("Hello")).toBe(false);
+    expect(isSilentReplyPrefixText("NA")).toBe(false);
   });
 
   it("rejects non-prefixes and mixed characters", () => {

@@ -28,9 +28,9 @@ export function isSilentReplyPrefixText(
   if (!normalized) {
     return false;
   }
-  if (!normalized.includes("_")) {
-    return false;
-  }
+  // Only match strings composed entirely of uppercase letters and underscores.
+  // This avoids false positives on normal text like "No, I can't..." once
+  // punctuation arrives in the next streaming chunk.
   if (/[^A-Z_]/.test(normalized)) {
     return false;
   }
