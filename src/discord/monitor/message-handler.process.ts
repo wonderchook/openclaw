@@ -10,7 +10,7 @@ import {
 } from "../../auto-reply/reply/history.js";
 import { finalizeInboundContext } from "../../auto-reply/reply/inbound-context.js";
 import { createReplyDispatcherWithTyping } from "../../auto-reply/reply/reply-dispatcher.js";
-import { isSilentReplyText } from "../../auto-reply/tokens.js";
+import { isSilentReplyPrefixText, isSilentReplyText } from "../../auto-reply/tokens.js";
 import type { ReplyPayload } from "../../auto-reply/types.js";
 import { shouldAckReaction as shouldAckReactionGate } from "../../channels/ack-reactions.js";
 import { logTypingFailure, logAckFailure } from "../../channels/logging.js";
@@ -502,7 +502,12 @@ export async function processDiscordMessage(ctx: DiscordMessagePreflightContext)
     // Strip reasoning/thinking tags that may leak through the stream.
     const cleaned = stripReasoningTagsFromText(text, { mode: "strict", trim: "both" });
     // Skip pure-reasoning messages (e.g. "Reasoning:\n…") that contain no answer text.
-    if (!cleaned || cleaned.startsWith("Reasoning:\n") || isSilentReplyText(cleaned)) {
+    if (
+      !cleaned ||
+      cleaned.startsWith("Reasoning:\n") ||
+      isSilentReplyText(cleaned) ||
+      isSilentReplyPrefixText(cleaned)
+    ) {
       return;
     }
     if (cleaned === lastPartialText) {
