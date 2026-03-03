@@ -9,7 +9,20 @@ import type {
   Usage,
 } from "@mariozechner/pi-ai";
 import { createAssistantMessageEventStream } from "@mariozechner/pi-ai";
+import { Agent as UndiciAgent } from "undici";
 import { createSubsystemLogger } from "../logging/subsystem.js";
+
+/**
+ * Undici dispatcher with extended timeouts for Ollama.
+ * On CPU-only hosts, model loading + KV cache allocation can take 5+ minutes
+ * before the first token is streamed. Node's default bodyTimeout (300s) kills
+ * the connection before Ollama finishes loading.
+ */
+const ollamaDispatcher = new UndiciAgent({
+  headersTimeout: 0, // no limit on time-to-first-header
+  bodyTimeout: 0, // no limit on idle time between body chunks
+  connectTimeout: 30_000, // 30s to establish TCP connection
+});
 
 const log = createSubsystemLogger("ollama-stream");
 
@@ -457,6 +470,8 @@ export function createOllamaStreamFn(baseUrl: string): StreamFn {
           headers,
           body: JSON.stringify(body),
           signal: options?.signal,
+          // @ts-expect-error -- Node 22 undici dispatcher; not in lib.dom types
+          dispatcher: ollamaDispatcher,
         });
 
         if (!response.ok) {
