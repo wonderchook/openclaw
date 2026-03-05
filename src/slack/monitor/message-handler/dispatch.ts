@@ -169,9 +169,9 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
   });
 
   const slackStreaming = resolveSlackStreamingConfig({
-    streaming: account.config.streaming,
+    streaming: prepared.channelConfig?.streaming ?? account.config.streaming,
     streamMode: account.config.streamMode,
-    nativeStreaming: account.config.nativeStreaming,
+    nativeStreaming: prepared.channelConfig?.nativeStreaming ?? account.config.nativeStreaming,
   });
   const previewStreamingEnabled = slackStreaming.mode !== "off";
   const streamingEnabled = isSlackStreamingEnabled({

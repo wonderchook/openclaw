@@ -4,7 +4,7 @@ import {
   resolveChannelEntryMatchWithFallback,
   type ChannelMatchSource,
 } from "../../channels/channel-config.js";
-import type { SlackReactionNotificationMode } from "../../config/config.js";
+import type { SlackReactionNotificationMode, SlackStreamingMode } from "../../config/config.js";
 import type { SlackMessageEvent } from "../types.js";
 import { allowListMatches, normalizeAllowListLower, normalizeSlackSlug } from "./allow-list.js";
 
@@ -15,6 +15,8 @@ export type SlackChannelConfigResolved = {
   users?: Array<string | number>;
   skills?: string[];
   systemPrompt?: string;
+  streaming?: SlackStreamingMode | boolean;
+  nativeStreaming?: boolean;
   matchKey?: string;
   matchSource?: ChannelMatchSource;
 };
@@ -27,6 +29,8 @@ export type SlackChannelConfigEntry = {
   users?: Array<string | number>;
   skills?: string[];
   systemPrompt?: string;
+  streaming?: SlackStreamingMode | boolean;
+  nativeStreaming?: boolean;
 };
 
 export type SlackChannelConfigEntries = Record<string, SlackChannelConfigEntry>;
@@ -136,6 +140,8 @@ export function resolveSlackChannelConfig(params: {
   const users = firstDefined(resolved.users, fallback?.users);
   const skills = firstDefined(resolved.skills, fallback?.skills);
   const systemPrompt = firstDefined(resolved.systemPrompt, fallback?.systemPrompt);
+  const streaming = firstDefined(resolved.streaming, fallback?.streaming);
+  const nativeStreaming = firstDefined(resolved.nativeStreaming, fallback?.nativeStreaming);
   const result: SlackChannelConfigResolved = {
     allowed,
     requireMention,
@@ -143,6 +149,8 @@ export function resolveSlackChannelConfig(params: {
     users,
     skills,
     systemPrompt,
+    streaming,
+    nativeStreaming,
   };
   return applyChannelMatchMeta(result, match);
 }

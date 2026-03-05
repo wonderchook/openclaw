@@ -42,6 +42,10 @@ export type SlackChannelConfig = {
   skills?: string[];
   /** Optional system prompt for this channel. */
   systemPrompt?: string;
+  /** Per-channel streaming mode override (overrides account-level streaming). */
+  streaming?: SlackStreamingMode | boolean;
+  /** Per-channel native streaming toggle (overrides account-level nativeStreaming). */
+  nativeStreaming?: boolean;
 };
 
 export type SlackReactionNotificationMode = "off" | "own" | "all" | "allowlist";
