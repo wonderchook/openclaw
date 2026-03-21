@@ -168,22 +168,6 @@
     "reason": "re-exports plugin-sdk via relative path; use openclaw/plugin-sdk/<subpath>"
   },
   {
-    "file": "extensions/slack/src/runtime-api.ts",
-    "line": 12,
-    "kind": "export",
-    "specifier": "../../../src/plugin-sdk/slack.js",
-    "resolvedPath": "src/plugin-sdk/slack.js",
-    "reason": "re-exports plugin-sdk via relative path; use openclaw/plugin-sdk/<subpath>"
-  },
-  {
-    "file": "extensions/slack/src/runtime-api.ts",
-    "line": 28,
-    "kind": "export",
-    "specifier": "../../../src/plugin-sdk/slack-core.js",
-    "resolvedPath": "src/plugin-sdk/slack-core.js",
-    "reason": "re-exports plugin-sdk via relative path; use openclaw/plugin-sdk/<subpath>"
-  },
-  {
     "file": "extensions/telegram/runtime-api.ts",
     "line": 10,
     "kind": "export",

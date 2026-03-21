@@ -12,7 +12,7 @@ export {
 } from "openclaw/plugin-sdk/core";
 export { type OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
 export { PAIRING_APPROVED_MESSAGE } from "openclaw/plugin-sdk/channel-pairing";
-export { SlackConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
+export { SlackConfigSchema } from "openclaw/plugin-sdk/slack-core";
 export {
   createActionGate,
   imageResultFromFile,

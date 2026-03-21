@@ -96,5 +96,6 @@
   "zalouser",
   "speech",
   "state-paths",
-  "tool-send"
+  "tool-send",
+  "slack-core"
 ]

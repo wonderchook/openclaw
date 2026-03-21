@@ -429,6 +429,10 @@
       "types": "./dist/plugin-sdk/tool-send.d.ts",
       "default": "./dist/plugin-sdk/tool-send.js"
     },
+    "./plugin-sdk/slack-core": {
+      "types": "./dist/plugin-sdk/slack-core.d.ts",
+      "default": "./dist/plugin-sdk/slack-core.js"
+    },
     "./extension-api": "./dist/extensionAPI.js",
     "./cli-entry": "./openclaw.mjs"
   },
